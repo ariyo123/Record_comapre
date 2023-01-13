@@ -46,6 +46,6 @@ print(mask)
 # equal_rows = df1[mask]
 # print(equal_rows)
 
-df_merged = pd.concat([df211, mask,dfoo], axis=1)
+df_merged = pd.concat([df211,mask,dfoo], axis=1)
 print(df_merged)
 df_merged.to_csv(f'report.csv', index=False)
