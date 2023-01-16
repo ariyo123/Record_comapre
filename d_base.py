@@ -39,53 +39,85 @@ final_date1= new_date1.strftime('%Y-%m-%d')
 print(final_date1)
 
 
-path1='C:/python_work/bvn_user_actitities/bank_code.csv'
+path1='C:/python_work/record_rec/App/bank_code.csv'
 with open(path1, 'r') as file_object:
     lines=file_object.read()
         #print(lines)
-    contents1=lines.split()
-    #print(contents1)
+    banks=lines.split()
+    print(banks)
+    fieldnames=['BVN','first_name','Middle_name','Surname','DOB','Account','Bank']
+    
+    for bank in banks[:]:
+        with open(f"C:/python_work/record_rec/icad_data{bank}.txt.csv", 'w', newline = '') as csvfile:
+                
+                my_writer = csv.writer(csvfile, delimiter = ',')
+                my_writer.writerow(fieldnames)
+        conn = msql.connect(host='127.0.0.1', database='housing_data', user='root', password='Magfum12@')
 
-institutions_list=[*csv.DictReader(open('BANK_TABLE.csv'))]; #print(institutions_list)
+        # get cursor object
+        cursor= conn.cursor()
+        sql=f"SELECT BVN,first_name,Middle_name,Surname,DOB,Account,Bank FROM housing_data.icad where Bank = '{bank}' order by bvn ;"
+
+        # execute your query
+        cursor.execute(sql)
+
+        # fetch all the matching rows 
+        result = cursor.fetchall()
+        #print(result)
+        
+        with open(f"C:/python_work/record_rec/icad_data{bank}.txt.csv", 'a', newline = '') as csvfile:
+                
+                my_writer = csv.writer(csvfile, delimiter = ',')
+               
+                  
+                
+                
+            # loop through the rows
+                for row in result:
+                    print(row)
+                    #print("\n")
+                    my_writer.writerow(row)
+    cursor.close() 
+
+    # with open(path1, 'r') as file_object:
+    #     lines=file_object.read()
+    #         #print(lines)
+    #     banks=lines.split()
+    #     print(banks)
+BVN_fieldnames=['BVN','first_name','Middle_name','Surname','DOB']
+        
+        # for bank in banks[:]:
+with open(f"C:/python_work/record_rec/bvn_data.txt.csv", 'w', newline = '') as csvfile:
+        
+        my_writer = csv.writer(csvfile, delimiter = ',')
+        my_writer.writerow(BVN_fieldnames)
+conn = msql.connect(host='127.0.0.1', database='housing_data', user='root', password='Magfum12@')
+
+# get cursor object
+cursor= conn.cursor()
+sql=f"SELECT BVN,first_name,Middle_name,Surname,DOB FROM housing_data.bvn_2 order by bvn ;"
+
+# execute your query
+cursor.execute(sql)
+
+# fetch all the matching rows 
+result = cursor.fetchall()
+#print(result)
+
+with open(f"C:/python_work/record_rec/bvn_data.txt.csv", 'a', newline = '') as csvfile:
+        
+        my_writer = csv.writer(csvfile, delimiter = ',')
+    
+        
+        
+        
+    # loop through the rows
+        for row in result:
+            print(row)
+            #print("\n")
+            my_writer.writerow(row)
+cursor.close() 
+import breading
+import comparism
 
 
-#calling the webservices dictionary to confirm the status
-
-for code in contents1[:]:
-    for institutions in institutions_list[:]:
-        #print(institutions)
-        if institutions['bankCode']==f'{code}':
-            bankCode=institutions['bankCode']
-            bankName=institutions['bankName']
-            dest=institutions['dest']
-            #print(bankCode)
-            #print(bankName)
-            #print(dest)
-            # Directory
-            directory = bankName
-
-            # Parent Directory path
-            parent_dir = f"{dest}"
-            # Path
-            path = os.path.join(parent_dir, directory)
-            #print(path)
-
-            # Create the directory
-            # 'GeeksForGeeks' in
-            # '/home / User / Documents'
-            #os.mkdir(path)
-            #print(f"Directory {bankName} created")
-            #pass
-            # textfile = open(f"{path}/{bankName}.txt", "a")
-            # textfile.write('ID,ACTION,IPADDRESS,ACTIONDATE,EMAIL,BANKCODE,DETAILS,ITEMSEARCHCOUNT,AUDITTYPE\n')
-            conn = msql.connect(host='127.0.0.1', database='housing_data', user='', password='')
-  
-            # get cursor object
-            cursor= conn.cursor()
-            sql=f"SELECT * FROM housing_data.useractivity where BANKCODE = '{bankCode}' and ACTIONDATE between '{final_date} 00:00:00' and '{final_date1} 23:59:59';"
-
-            # execute your query
-            cursor.execute(sql)
-            
-            # fetch all the matching rows 
-            result = cursor.fetchall()
