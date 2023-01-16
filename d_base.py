@@ -52,7 +52,7 @@ with open(path1, 'r') as file_object:
                 
                 my_writer = csv.writer(csvfile, delimiter = ',')
                 my_writer.writerow(fieldnames)
-        conn = msql.connect(host='127.0.0.1', database='housing_data', user='root', password='Magfum12@')
+        conn = msql.connect(host='127.0.0.1', database='housing_data', user='', password='')
 
         # get cursor object
         cursor= conn.cursor()
@@ -91,7 +91,7 @@ with open(f"C:/python_work/record_rec/bvn_data.txt.csv", 'w', newline = '') as c
         
         my_writer = csv.writer(csvfile, delimiter = ',')
         my_writer.writerow(BVN_fieldnames)
-conn = msql.connect(host='127.0.0.1', database='housing_data', user='root', password='Magfum12@')
+conn = msql.connect(host='127.0.0.1', database='housing_data', user='', password='')
 
 # get cursor object
 cursor= conn.cursor()
